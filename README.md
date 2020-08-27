@@ -1,2 +1,3 @@
-# woww
-A web-based tool to keep track of who's on what, for how long and when. 
+# Simple Object Server
+
+I needed a generic server I could use for app and tool for user authentication and JSON data storage.
