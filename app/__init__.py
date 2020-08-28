@@ -3,15 +3,17 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from config import app_config
 
 # Init a database
 db = SQLAlchemy()
 
-def create_app():
-    app = Flask(__name__)
+def create_app( config_name ):
+    app = Flask(__name__, instance_relative_config=True)
 
    # Load the config file -- this has to happen before we init the db/app below
-    app.config.from_object('config')
+    app.config.from_object(app_config[config_name])
+    app.config.from_pyfile('config.py')
     db.init_app(app)
 
     loginMgr = LoginManager()
@@ -32,6 +34,9 @@ def create_app():
     # blueprint for non-auth parts of app
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    # with app.app_context():
+    #     db.create_all()  # Create sql tables for our data models
 
     return app
 
